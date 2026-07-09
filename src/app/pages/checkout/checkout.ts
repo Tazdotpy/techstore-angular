@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { CarritoService } from '../../services/carrito';
 import { HistorialService } from '../../services/historial';
 import { AuthService } from '../../services/auth';
+import { EmailService } from '../../services/email';
 import { Orden } from '../../models/orden';
 
 @Component({
@@ -19,6 +20,7 @@ export class Checkout implements OnInit, OnDestroy {
   private carritoSvc    = inject(CarritoService);
   private historialSvc  = inject(HistorialService);
   private authSvc       = inject(AuthService);
+  private emailSvc      = inject(EmailService);
   private router        = inject(Router);
 
   // Formulario reactivo (rubric §7)
@@ -71,6 +73,10 @@ export class Checkout implements OnInit, OnDestroy {
     this.carritoSvc.vaciar();
     this.numeroOrden = orden.id;
     this.ordenCompletada = true;
+
+    this.emailSvc.enviarConfirmacion(orden).catch(err =>
+      console.error('Error enviando correo de confirmación:', err)
+    );
   }
 
   ngOnDestroy(): void { this.sub?.unsubscribe(); }
