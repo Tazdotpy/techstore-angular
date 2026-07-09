@@ -1,0 +1,32 @@
+.productos-page { padding: 2rem 0 4rem; }
+
+.page-header {
+  margin-bottom: 1.5rem;
+  h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+}
+
+.resultados { color: var(--texto-muted); font-size: 0.9rem; }
+
+.productos-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+}
+
+.sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--borde-card);
+  border-radius: 12px;
+  padding: 1.25rem;
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+}
+
+.sin-resultados {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--texto);
+  font-size: 1.1rem;
+}

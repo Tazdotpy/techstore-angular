@@ -1,0 +1,105 @@
+.carrito-page { padding: 2rem 0 4rem; }
+h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2rem; }
+
+.carrito-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+}
+
+.tabla-carrito {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--borde);
+    color: var(--texto-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: middle;
+  }
+}
+
+.td-prod {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+}
+.thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.td-subtotal { font-weight: 600; color: var(--acento); }
+
+.qty-input {
+  width: 60px;
+  background: var(--bg-card);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  color: var(--texto);
+  text-align: center;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: var(--texto-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.3rem;
+  transition: color 0.2s;
+  &:hover { color: var(--error); }
+}
+
+.carrito-acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn-vaciar {
+  background: none;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: var(--texto-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  &:hover { border-color: var(--error); color: var(--error); }
+}
+
+.resumen-card {
+  background: var(--bg-card);
+  border: 1px solid var(--borde-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  h3 { font-size: 1.1rem; margin-bottom: 1.25rem; }
+}
+
+.resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--borde);
+  font-size: 0.9rem;
+  &:last-of-type { border: none; }
+  &.total { font-weight: 700; font-size: 1.1rem; color: var(--acento); }
+}
+
+.carrito-vacio {
+  text-align: center;
+  padding: 5rem 2rem;
+  p { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--texto-muted); }
+}

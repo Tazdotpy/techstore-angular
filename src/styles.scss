@@ -1,0 +1,169 @@
+// ─── Variables globales (tema oscuro por defecto) ───────────────────────────
+:root {
+  --bg-principal: #111111;
+  --bg-card: #1e1e1e;
+  --bg-nav: #181818;
+  --acento: #d97706;
+  --acento-hover: #f59e0b;
+  --texto: #f3f4f6;
+  --texto-muted: #9ca3af;
+  --borde: #374151;
+  --borde-card: #2d2d2d;
+  --sombra: rgba(0, 0, 0, 0.4);
+  --error: #ef4444;
+  --exito: #22c55e;
+}
+
+// ─── Overrides para tema claro (bonus: dark mode toggle) ────────────────────
+.tema-claro {
+  --bg-principal: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-nav: #1e1e1e;
+  --acento: #d97706;
+  --acento-hover: #b45309;
+  --texto: #111111;
+  --texto-muted: #6b7280;
+  --borde: #e5e7eb;
+  --borde-card: #d1d5db;
+  --sombra: rgba(0, 0, 0, 0.1);
+}
+
+// ─── Reset y base ────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-principal);
+  color: var(--texto);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+a {
+  color: var(--acento);
+  text-decoration: none;
+  transition: color 0.2s;
+  &:hover { color: var(--acento-hover); }
+}
+
+img { max-width: 100%; height: auto; }
+
+// ─── Layout ──────────────────────────────────────────────────────────────────
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--texto);
+  margin-bottom: 2rem;
+  &::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--acento);
+    margin-top: 0.5rem;
+    border-radius: 2px;
+  }
+}
+
+// ─── Botones globales ────────────────────────────────────────────────────────
+.btn-primary-ts {
+  display: inline-block;
+  background: var(--acento);
+  color: #fff !important;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  text-decoration: none;
+  &:hover { background: var(--acento-hover); transform: translateY(-1px); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+}
+
+.btn-outline-ts {
+  display: inline-block;
+  background: transparent;
+  color: var(--acento) !important;
+  padding: 0.75rem 1.75rem;
+  border: 2px solid var(--acento);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  &:hover { background: var(--acento); color: #fff !important; }
+}
+
+.btn-block { display: block; width: 100%; text-align: center; }
+
+// ─── Formularios ─────────────────────────────────────────────────────────────
+.form-group {
+  margin-bottom: 1.25rem;
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--texto);
+  }
+}
+
+.form-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: var(--texto);
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  &:focus {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+  }
+  &.error { border-color: var(--error); }
+}
+
+.error-msg {
+  display: block;
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+// ─── Estado de carga ─────────────────────────────────────────────────────────
+.cargando {
+  text-align: center;
+  padding: 4rem;
+  color: var(--texto-muted);
+}
+
+// ─── Grids de productos ───────────────────────────────────────────────────────
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+// ─── Bootstrap overrides ─────────────────────────────────────────────────────
+.navbar-ts { background-color: var(--bg-nav) !important; }

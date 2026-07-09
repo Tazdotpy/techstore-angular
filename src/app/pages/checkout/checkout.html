@@ -1,0 +1,98 @@
+<div class="checkout-page">
+  <div class="container">
+
+    <!-- Confirmación de orden -->
+    <div *ngIf="ordenCompletada; else formulario" class="confirmacion">
+      <div class="confirmacion-card">
+        <div class="check-icon">✅</div>
+        <h2>¡Orden Confirmada!</h2>
+        <p class="orden-id">Número de orden: <strong>{{ numeroOrden }}</strong></p>
+        <p class="orden-desc">Gracias por tu compra. Te contactaremos pronto para coordinar la entrega.</p>
+        <div class="conf-btns">
+          <a routerLink="/" class="btn-primary-ts">Volver al inicio</a>
+          <a routerLink="/historial" class="btn-outline-ts">Ver mi historial</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario reactivo (rubric §7) -->
+    <ng-template #formulario>
+      <h1>Checkout</h1>
+
+      <div class="checkout-layout">
+        <!-- [formGroup] = property binding, (ngSubmit) = event binding -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="checkout-form">
+
+          <div class="form-group">
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" type="text" formControlName="nombre" class="form-input"
+                   [class.error]="f['nombre'].invalid && f['nombre'].touched">
+            <span class="error-msg" *ngIf="f['nombre'].invalid && f['nombre'].touched">
+              Nombre requerido (mínimo 3 caracteres)
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input id="email" type="email" formControlName="email" class="form-input"
+                   [class.error]="f['email'].invalid && f['email'].touched">
+            <span class="error-msg" *ngIf="f['email'].invalid && f['email'].touched">
+              Email válido requerido
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="direccion">Dirección de entrega</label>
+            <textarea id="direccion" formControlName="direccion" class="form-input" rows="3"
+                      [class.error]="f['direccion'].invalid && f['direccion'].touched"></textarea>
+            <span class="error-msg" *ngIf="f['direccion'].invalid && f['direccion'].touched">
+              Dirección requerida (mínimo 10 caracteres)
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="tel" formControlName="telefono" class="form-input"
+                   placeholder="8091234567"
+                   [class.error]="f['telefono'].invalid && f['telefono'].touched">
+            <span class="error-msg" *ngIf="f['telefono'].invalid && f['telefono'].touched">
+              Teléfono válido requerido (10–15 dígitos)
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="tarjeta">Número de tarjeta</label>
+            <input id="tarjeta" type="text" formControlName="tarjeta" class="form-input"
+                   placeholder="1234567890123456" maxlength="16"
+                   [class.error]="f['tarjeta'].invalid && f['tarjeta'].touched">
+            <span class="error-msg" *ngIf="f['tarjeta'].invalid && f['tarjeta'].touched">
+              Número de tarjeta de 16 dígitos requerido
+            </span>
+          </div>
+
+          <button type="submit" class="btn-primary-ts btn-block">
+            Confirmar Orden — RD$ {{ total() | number:'1.0-0' }}
+          </button>
+        </form>
+
+        <!-- Resumen del pedido -->
+        <aside class="checkout-resumen">
+          <h3>Resumen</h3>
+          <div class="resumen-linea">
+            <span>Subtotal</span>
+            <span>RD$ {{ subtotal | number:'1.0-0' }}</span>
+          </div>
+          <div class="resumen-linea">
+            <span>ITBIS (18%)</span>
+            <span>RD$ {{ itbis() | number:'1.0-0' }}</span>
+          </div>
+          <div class="resumen-linea total">
+            <span>Total</span>
+            <span>RD$ {{ total() | number:'1.0-0' }}</span>
+          </div>
+        </aside>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

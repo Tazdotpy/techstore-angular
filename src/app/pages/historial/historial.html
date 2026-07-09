@@ -1,0 +1,37 @@
+<div class="historial-page">
+  <div class="container">
+    <h1>Mi Historial de Compras 📦</h1>
+
+    <ng-container *ngIf="ordenes$ | async as ordenes">
+      <div *ngIf="ordenes.length > 0; else sinOrdenes">
+        <div class="orden-card" *ngFor="let orden of ordenes; trackBy: trackById">
+          <div class="orden-header">
+            <div>
+              <span class="orden-id">{{ orden.id }}</span>
+              <!-- Pipe: date (rubric §10) -->
+              <span class="orden-fecha">{{ orden.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <span class="orden-total">RD$ {{ orden.total | number:'1.0-0' }}</span>
+          </div>
+          <div class="orden-items">
+            <!-- *ngFor sobre los items de cada orden -->
+            <span *ngFor="let item of orden.items" class="item-tag">
+              {{ item.producto.nombre }} ×{{ item.cantidad }}
+            </span>
+          </div>
+          <div class="orden-footer">
+            <span>Cliente: {{ orden.cliente.nombre }}</span>
+            <span>ITBIS: RD$ {{ orden.itbis | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #sinOrdenes>
+        <div class="sin-ordenes">
+          <p>📭 No tienes compras registradas aún.</p>
+          <a routerLink="/productos" class="btn-primary-ts">Ir al catálogo</a>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

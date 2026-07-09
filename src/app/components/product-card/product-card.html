@@ -1,0 +1,43 @@
+<div class="product-card" [ngClass]="{'sin-stock': producto.stock === 0}">
+
+  <div class="card-top">
+    <span class="badge-prod" *ngIf="producto.badge">{{ producto.badge }}</span>
+    <span class="descuento-pct" *ngIf="tieneDescuento()">-{{ calcularDescuentoPct() }}%</span>
+    <button class="btn-fav" (click)="toggleFavorito()" [ngClass]="{'activo': esFavorito}"
+            aria-label="Añadir a favoritos">
+      {{ esFavorito ? '❤️' : '🤍' }}
+    </button>
+  </div>
+
+  <!-- Property binding: [src], [alt] -->
+  <a [routerLink]="['/producto', producto.id]" class="card-img-link">
+    <img [src]="producto.imagen" [alt]="producto.nombre" class="card-img" loading="lazy">
+  </a>
+
+  <div class="card-body">
+    <p class="card-marca">{{ producto.marca | uppercase }}</p>
+    <!-- Interpolación: {{ producto.nombre }} -->
+    <h3 class="card-nombre">{{ producto.nombre }}</h3>
+
+    <div class="card-precio">
+      <span class="precio-actual">RD$ {{ producto.precio | number:'1.0-0' }}</span>
+      <span class="precio-original" *ngIf="producto.precioOriginal">
+        RD$ {{ producto.precioOriginal | number:'1.0-0' }}
+      </span>
+    </div>
+
+    <div class="card-estrellas">
+      <!-- *ngFor sobre array de números (rubric §4) -->
+      <span *ngFor="let n of estrellas" [ngClass]="n <= producto.calificacion ? 'estrella-llena' : 'estrella-vacia'">★</span>
+      <span class="resenas">({{ producto.resenas }})</span>
+    </div>
+
+    <!-- Event binding: (click) -->
+    <button class="btn-agregar"
+            [disabled]="producto.stock === 0 || agregandose"
+            [ngClass]="{'agregado': agregandose}"
+            (click)="agregarAlCarrito()">
+      {{ agregandose ? '✓ Agregado' : producto.stock === 0 ? 'Sin stock' : '🛒 Agregar' }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<!-- Hero -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <p class="hero-tag">🇩🇴 Santo Domingo, República Dominicana</p>
+      <h1 class="hero-titulo">Tecnología al mejor precio<br><span class="accent">para los dominicanos</span></h1>
+      <p class="hero-desc">Laptops, smartphones, gaming y más. Envío a todo el país.</p>
+      <div class="hero-btns">
+        <a routerLink="/productos" class="btn-primary-ts">Ver Catálogo</a>
+        <a routerLink="/carrito" class="btn-outline-ts">Mi Carrito</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Productos Destacados -->
+<section class="section-destacados">
+  <div class="container">
+    <h2 class="section-titulo">Productos Destacados</h2>
+
+    <!-- *ngIf con async pipe (rubric §4) -->
+    <div class="productos-grid" *ngIf="destacados$ | async as productos; else cargando">
+      <app-product-card
+        *ngFor="let p of productos; trackBy: trackById"
+        [producto]="p">
+      </app-product-card>
+    </div>
+
+    <ng-template #cargando>
+      <div class="cargando">Cargando productos</div>
+    </ng-template>
+
+    <div class="text-center mt-4">
+      <a routerLink="/productos" class="btn-outline-ts">Ver todos →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Categorías -->
+<section class="section-cats">
+  <div class="container">
+    <h2 class="section-titulo">Explorar por Categoría</h2>
+    <div class="cats-grid">
+      <!-- *ngFor sobre las categorías (rubric §4) -->
+      <a *ngFor="let cat of categorias"
+         [routerLink]="['/productos']"
+         [queryParams]="{categoria: cat.id}"
+         class="cat-card">
+        <span class="cat-icono">{{ cat.icono }}</span>
+        <span class="cat-nombre">{{ cat.nombre }}</span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<nav class="navbar-ts navbar navbar-expand-lg py-2">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/" style="color: var(--acento);">
+      ⚡ TechStore RD
+    </a>
+
+    <button class="navbar-toggler border-0" type="button" (click)="toggleMenu()"
+            style="color: var(--texto);" aria-label="Abrir menú">
+      ☰
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="menuAbierto">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="activo"
+             [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/productos" routerLinkActive="activo">Catálogo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/favoritos" routerLinkActive="activo">Favoritos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contacto" routerLinkActive="activo">Contacto</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn-tema" (click)="toggleTema()" title="Cambiar tema" aria-label="Cambiar tema">
+          <span *ngIf="temaOscuro$ | async; else iconoClaro">☀️</span>
+          <ng-template #iconoClaro>🌙</ng-template>
+        </button>
+
+        <a routerLink="/carrito" class="btn-carrito" aria-label="Ver carrito">
+          🛒
+          <span class="carrito-badge" *ngIf="(cantidadCarrito$ | async) as n">{{ n }}</span>
+        </a>
+
+        <ng-container *ngIf="autenticado$ | async; else btnLogin">
+          <a routerLink="/historial" class="btn-outline-ts btn-sm-ts">Mi historial</a>
+          <button class="btn-salir" (click)="logout()">Salir</button>
+        </ng-container>
+        <ng-template #btnLogin>
+          <a routerLink="/login" class="btn-primary-ts btn-sm-ts">Entrar</a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,26 @@
+.not-found-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.nf-code {
+  font-size: 6rem;
+  font-weight: 900;
+  color: var(--acento);
+  line-height: 1;
+  margin: 0 0 0.5rem;
+}
+
+.nf-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.nf-desc {
+  color: var(--texto-muted);
+  margin-bottom: 2rem;
+}

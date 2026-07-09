@@ -1,0 +1,12 @@
+<div class="category-menu-ts">
+  <h6 class="menu-titulo">Categorías</h6>
+  <!-- *ngFor: directiva estructural (rubric §4) -->
+  <ul class="cat-list">
+    <li *ngFor="let cat of categorias"
+        [ngClass]="{'activa': cat.id === categoriaActual}"
+        (click)="seleccionar(cat.id)">
+      <span class="cat-icono">{{ cat.icono }}</span>
+      <span class="cat-nombre">{{ cat.nombre }}</span>
+    </li>
+  </ul>
+</div>

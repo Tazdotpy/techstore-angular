@@ -1,0 +1,71 @@
+.historial-page { padding: 2rem 0 4rem; }
+h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2rem; }
+
+.orden-card {
+  background: var(--bg-card);
+  border: 1px solid var(--borde-card);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+  &:hover { border-color: var(--acento); }
+}
+
+.orden-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.orden-id {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--acento);
+  display: block;
+  font-weight: 600;
+}
+
+.orden-fecha {
+  font-size: 0.8rem;
+  color: var(--texto-muted);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.orden-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--acento);
+}
+
+.orden-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.item-tag {
+  background: rgba(217, 119, 6, 0.1);
+  color: var(--acento);
+  border-radius: 20px;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.orden-footer {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--texto-muted);
+  border-top: 1px solid var(--borde);
+  padding-top: 0.75rem;
+}
+
+.sin-ordenes {
+  text-align: center;
+  padding: 4rem 2rem;
+  p { font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--texto-muted); }
+}

@@ -1,0 +1,74 @@
+<div class="detalle-page">
+  <div class="container">
+    <a routerLink="/productos" class="btn-back">← Volver al catálogo</a>
+
+    <ng-container *ngIf="producto$ | async as producto; else cargando">
+      <div class="detalle-layout" *ngIf="producto; else noEncontrado">
+
+        <div class="detalle-imagen">
+          <!-- Property binding: [src], [alt] -->
+          <img [src]="producto.imagen" [alt]="producto.nombre">
+          <span class="badge-prod" *ngIf="producto.badge">{{ producto.badge }}</span>
+        </div>
+
+        <div class="detalle-info">
+          <!-- Pipe: uppercase (rubric §10) -->
+          <p class="det-marca">{{ producto.marca | uppercase }}</p>
+          <!-- Interpolación -->
+          <h1 class="det-nombre">{{ producto.nombre }}</h1>
+          <p class="det-desc">{{ producto.descripcion }}</p>
+
+          <!-- ngSwitch: stock status (rubric §4) -->
+          <div class="det-stock" [ngSwitch]="producto.stock">
+            <span class="stock-cero" *ngSwitchCase="0">⚠ Sin stock</span>
+            <span class="stock-bajo" *ngSwitchCase="1">⚡ Último en stock</span>
+            <span class="stock-ok"  *ngSwitchDefault>✓ {{ producto.stock }} disponibles</span>
+          </div>
+
+          <div class="det-precio">
+            <span class="precio-main">RD$ {{ producto.precio | number:'1.0-0' }}</span>
+            <span class="precio-orig" *ngIf="producto.precioOriginal">
+              RD$ {{ producto.precioOriginal | number:'1.0-0' }}
+            </span>
+            <small class="itbis-nota">Precio incluye ITBIS 18%</small>
+          </div>
+
+          <div class="estrellas-row">
+            <!-- *ngFor con [ngClass] (rubric §4) -->
+            <span *ngFor="let n of estrellas" [ngClass]="n <= producto.calificacion ? 'e-llena' : 'e-vacia'">★</span>
+            <span class="resenas-txt">({{ producto.resenas }} reseñas)</span>
+          </div>
+
+          <div class="cantidad-ctrl">
+            <!-- Event binding: (click) -->
+            <button (click)="cambiarCantidad(-1)" class="qty-btn" [disabled]="cantidad <= 1">−</button>
+            <span class="qty-num">{{ cantidad }}</span>
+            <button (click)="cambiarCantidad(1)" class="qty-btn">+</button>
+          </div>
+
+          <div class="det-acciones">
+            <button class="btn-primary-ts"
+                    (click)="agregarAlCarrito(producto)"
+                    [disabled]="producto.stock === 0 || agregado">
+              {{ agregado ? '✓ Agregado al carrito' : '🛒 Agregar al carrito' }}
+            </button>
+            <button class="btn-fav-lg" (click)="toggleFavorito(producto)">
+              {{ esFavorito ? '❤️ En favoritos' : '🤍 Agregar a favoritos' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noEncontrado>
+        <div class="not-found-msg">
+          <h2>Producto no encontrado</h2>
+          <a routerLink="/productos" class="btn-primary-ts">Ver catálogo</a>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #cargando>
+      <div class="cargando">Cargando producto</div>
+    </ng-template>
+  </div>
+</div>

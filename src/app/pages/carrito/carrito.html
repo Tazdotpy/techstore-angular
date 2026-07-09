@@ -1,0 +1,77 @@
+<div class="carrito-page">
+  <div class="container">
+    <h1>Tu Carrito</h1>
+
+    <ng-container *ngIf="items$ | async as items">
+      <ng-container *ngIf="items.length > 0; else vacio">
+        <div class="carrito-layout">
+
+          <!-- Tabla de items -->
+          <div class="carrito-items">
+            <table class="tabla-carrito">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- *ngFor sobre los items del carrito -->
+                <tr *ngFor="let item of items; trackBy: trackById">
+                  <td class="td-prod">
+                    <img [src]="item.producto.imagen" [alt]="item.producto.nombre" class="thumb">
+                    <span>{{ item.producto.nombre }}</span>
+                  </td>
+                  <td>RD$ {{ item.producto.precio | number:'1.0-0' }}</td>
+                  <td>
+                    <input type="number" class="qty-input"
+                           [value]="item.cantidad" min="1" max="99"
+                           (change)="cambiarCantidad(item.producto.id, $event)">
+                  </td>
+                  <td class="td-subtotal">RD$ {{ item.producto.precio * item.cantidad | number:'1.0-0' }}</td>
+                  <td>
+                    <button class="btn-eliminar" (click)="eliminar(item.producto.id)" title="Eliminar">✕</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="carrito-acciones">
+              <button class="btn-vaciar" (click)="vaciar()">🗑 Vaciar carrito</button>
+              <a routerLink="/productos" class="btn-outline-ts">← Seguir comprando</a>
+            </div>
+          </div>
+
+          <!-- Resumen -->
+          <aside class="resumen-card" *ngIf="subtotal$ | async as sub">
+            <h3>Resumen del Pedido</h3>
+            <div class="resumen-linea">
+              <span>Subtotal</span>
+              <span>RD$ {{ sub | number:'1.0-0' }}</span>
+            </div>
+            <div class="resumen-linea">
+              <span>ITBIS (18%)</span>
+              <span>RD$ {{ itbis(sub) | number:'1.0-0' }}</span>
+            </div>
+            <div class="resumen-linea total">
+              <span>Total</span>
+              <span>RD$ {{ total(sub) | number:'1.0-0' }}</span>
+            </div>
+            <a routerLink="/checkout" class="btn-primary-ts btn-block mt-3">
+              Proceder al Checkout
+            </a>
+          </aside>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #vacio>
+      <div class="carrito-vacio">
+        <p>🛒 Tu carrito está vacío.</p>
+        <a routerLink="/productos" class="btn-primary-ts">Explorar productos</a>
+      </div>
+    </ng-template>
+  </div>
+</div>

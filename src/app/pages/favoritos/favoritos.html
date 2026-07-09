@@ -1,0 +1,21 @@
+<div class="favoritos-page">
+  <div class="container">
+    <h1>Mis Favoritos ❤️</h1>
+
+    <ng-container *ngIf="favoritos$ | async as lista">
+      <div class="productos-grid" *ngIf="lista.length > 0; else vacio">
+        <app-product-card
+          *ngFor="let p of lista; trackBy: trackById"
+          [producto]="p">
+        </app-product-card>
+      </div>
+
+      <ng-template #vacio>
+        <div class="favoritos-vacio">
+          <p>🤍 Aún no tienes favoritos.</p>
+          <a routerLink="/productos" class="btn-primary-ts">Explorar productos</a>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

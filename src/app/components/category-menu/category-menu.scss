@@ -1,0 +1,33 @@
+.category-menu-ts { padding: 0; }
+
+.menu-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-muted);
+  margin-bottom: 0.75rem;
+}
+
+.cat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--texto-muted);
+    font-size: 0.9rem;
+    transition: all 0.15s;
+
+    &:hover { background: rgba(217, 119, 6, 0.1); color: var(--acento); }
+    &.activa { background: rgba(217, 119, 6, 0.15); color: var(--acento); font-weight: 600; }
+  }
+}
+
+.cat-icono { font-size: 1rem; width: 20px; text-align: center; }

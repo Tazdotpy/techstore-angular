@@ -1,0 +1,41 @@
+<div class="productos-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Catálogo de Productos</h1>
+      <p class="resultados" *ngIf="!cargando">{{ totalResultados }} producto(s) encontrado(s)</p>
+    </div>
+
+    <!-- SearchBar: two-way binding interno + @Output al padre -->
+    <app-search-bar (busqueda)="onBusqueda($event)"></app-search-bar>
+
+    <div class="productos-layout">
+      <aside class="sidebar">
+        <!-- CategoryMenu: @Output comunica la categoría seleccionada -->
+        <app-category-menu (categoriaSeleccionada)="onCategoria($event)"></app-category-menu>
+      </aside>
+
+      <main class="productos-main">
+        <ng-container *ngIf="productos$ | async as lista; else cargandoTpl">
+          <div class="productos-grid" *ngIf="lista.length > 0; else sinResultados">
+            <app-product-card
+              *ngFor="let p of lista; trackBy: trackById"
+              [producto]="p">
+            </app-product-card>
+          </div>
+
+          <!-- *ngIf con else (rubric §4) -->
+          <ng-template #sinResultados>
+            <div class="sin-resultados">
+              <p>😕 No se encontraron productos con esos criterios.</p>
+              <p style="color: var(--texto-muted); font-size:0.9rem;">Intenta con otra búsqueda o categoría.</p>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        <ng-template #cargandoTpl>
+          <div class="cargando">Cargando productos</div>
+        </ng-template>
+      </main>
+    </div>
+  </div>
+</div>

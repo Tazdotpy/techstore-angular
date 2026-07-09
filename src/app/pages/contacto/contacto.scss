@@ -1,0 +1,39 @@
+.contacto-page { padding: 3rem 0 5rem; }
+
+.contacto-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  @media (max-width: 768px) { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.contacto-info {
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+  p  { color: var(--texto-muted); margin-bottom: 2rem; }
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--texto);
+  font-size: 0.95rem;
+}
+
+.contacto-form-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--borde-card);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.contacto-form h2 { font-size: 1.25rem; margin-bottom: 1.5rem; }
+
+.enviado-msg {
+  text-align: center;
+  padding: 2rem;
+  h3 { color: var(--exito); margin-bottom: 0.75rem; }
+  p  { color: var(--texto-muted); margin-bottom: 1.5rem; }
+}

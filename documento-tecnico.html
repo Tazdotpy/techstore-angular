@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documento Técnico — TechStore RD con Angular</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #fff;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+    }
+
+    /* ── Portada ── */
+    .portada {
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      border-bottom: 3px solid #d97706;
+      margin-bottom: 2.5rem;
+    }
+    .portada .logo { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .portada h1 { font-size: 2rem; color: #d97706; margin-bottom: 0.5rem; }
+    .portada h2 { font-size: 1.1rem; font-weight: 400; color: #555; margin-bottom: 1.5rem; }
+    .portada .meta { font-size: 0.9rem; color: #777; line-height: 2; }
+    .portada .meta strong { color: #333; }
+
+    /* ── Índice ── */
+    .indice {
+      background: #fef3c7;
+      border-left: 4px solid #d97706;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .indice h3 { color: #92400e; margin-bottom: 0.75rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .indice ol { padding-left: 1.25rem; color: #555; }
+    .indice li { margin-bottom: 0.2rem; font-size: 0.9rem; }
+
+    /* ── Secciones ── */
+    h2.seccion {
+      font-size: 1.4rem;
+      color: #d97706;
+      border-bottom: 2px solid #fde68a;
+      padding-bottom: 0.4rem;
+      margin: 2.5rem 0 1rem;
+    }
+    h3.subseccion {
+      font-size: 1.05rem;
+      color: #92400e;
+      margin: 1.5rem 0 0.5rem;
+    }
+    h4.concepto {
+      font-size: 0.95rem;
+      color: #333;
+      margin: 1rem 0 0.35rem;
+      font-weight: 600;
+    }
+
+    p { margin-bottom: 0.75rem; color: #333; }
+
+    /* ── Código ── */
+    pre {
+      background: #1e1e1e;
+      color: #f3f4f6;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      margin: 0.75rem 0 1rem;
+      border-left: 3px solid #d97706;
+    }
+    code {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: 'Courier New', monospace;
+    }
+    pre code {
+      background: none;
+      color: #f3f4f6;
+      padding: 0;
+      font-size: 0.8rem;
+    }
+
+    /* ── Cuadros informativos ── */
+    .info-box {
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.9rem;
+    }
+    .info-box.por-que { background: #ecfdf5; border-left: 4px solid #10b981; }
+    .info-box.por-que::before { content: "✅ ¿Por qué? "; font-weight: 700; color: #065f46; }
+    .info-box.como { background: #eff6ff; border-left: 4px solid #3b82f6; }
+    .info-box.como::before { content: "🔍 ¿Cómo funciona? "; font-weight: 700; color: #1e40af; }
+    .info-box.en-proyecto { background: #fef3c7; border-left: 4px solid #d97706; }
+    .info-box.en-proyecto::before { content: "📦 En TechStore RD: "; font-weight: 700; color: #92400e; }
+
+    /* ── Tabla de arquitectura ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.88rem;
+    }
+    th {
+      background: #d97706;
+      color: #fff;
+      padding: 0.6rem 1rem;
+      text-align: left;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td {
+      padding: 0.55rem 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    td code { font-size: 0.78rem; }
+
+    /* ── Diagrama de arquitectura (texto) ── */
+    .diagrama {
+      background: #1e1e1e;
+      color: #f3f4f6;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      margin: 0.75rem 0 1rem;
+      border-left: 3px solid #d97706;
+    }
+    .diagrama .amber { color: #f59e0b; }
+    .diagrama .green { color: #34d399; }
+    .diagrama .blue  { color: #60a5fa; }
+
+    /* ── Rúbrica al final ── */
+    .rubrica {
+      margin-top: 2rem;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .rubrica-titulo {
+      background: #d97706;
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .rubrica table { margin: 0; }
+    .rubrica th { font-size: 0.75rem; }
+    .rubrica td.pts { font-weight: 700; color: #d97706; text-align: center; }
+    .badge {
+      display: inline-block;
+      background: #10b981;
+      color: #fff;
+      border-radius: 20px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { padding: 1rem 1.5rem; }
+      pre { white-space: pre-wrap; word-break: break-word; }
+      h2.seccion { page-break-before: always; }
+      .portada { page-break-before: avoid; }
+      .indice { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ PORTADA -->
+<div class="portada">
+  <div class="logo">⚡</div>
+  <h1>TechStore RD</h1>
+  <h2>Documento Técnico — Práctica 4: Desarrollo Front-End con Angular</h2>
+  <div class="meta">
+    <strong>Curso:</strong> Desarrollo Web Moderno<br>
+    <strong>Proyecto:</strong> TechStore Online con Angular<br>
+    <strong>Estudiante:</strong> Kevin<br>
+    <strong>Empresa:</strong> TechStore RD — Gaggleman (Santo Domingo, RD)<br>
+    <strong>Tecnologías:</strong> Angular 22 · TypeScript · RxJS · Bootstrap<br>
+    <strong>Año:</strong> 2025
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ ÍNDICE -->
+<div class="indice">
+  <h3>Tabla de Contenidos</h3>
+  <ol>
+    <li>Arquitectura del Proyecto</li>
+    <li>Componentes y Templates</li>
+    <li>Data Binding (los 4 tipos)</li>
+    <li>Directivas Estructurales y de Atributo</li>
+    <li>Servicios e Inyección de Dependencias</li>
+    <li>Routing y Navegación SPA</li>
+    <li>Lazy Loading</li>
+    <li>Comunicación entre Componentes (@Input / @Output)</li>
+    <li>Formularios Reactivos</li>
+    <li>Observables y RxJS</li>
+    <li>HttpClient — Consumo de API REST</li>
+    <li>Pipes</li>
+    <li>LocalStorage — Persistencia de Estado</li>
+    <li>Guards e Interceptors</li>
+    <li>Funcionalidades Bonus</li>
+    <li>Rúbrica de Evaluación</li>
+  </ol>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 1. ARQUITECTURA -->
+<h2 class="seccion">1. Arquitectura del Proyecto</h2>
+
+<p>TechStore RD es una <strong>Single Page Application (SPA)</strong> construida con Angular 22. Toda la navegación ocurre en el cliente sin recargar la página; Angular intercepta los cambios de URL y muestra el componente correspondiente dentro del <code>&lt;router-outlet&gt;</code> del componente raíz.</p>
+
+<div class="diagrama">
+<span class="amber">techstore-angular/src/app/</span>
+├── <span class="green">components/</span>         ← Componentes reutilizables (UI global)
+│   ├── navbar/            (barra de navegación + carrito + tema)
+│   ├── footer/            (pie de página)
+│   ├── product-card/      (tarjeta de producto con @Input/@Output)
+│   ├── search-bar/        (búsqueda en tiempo real con debounce)
+│   └── category-menu/     (menú lateral de categorías)
+│
+├── <span class="green">pages/</span>              ← Vistas completas (una por ruta)
+│   ├── home/              (página principal con productos destacados)
+│   ├── productos/         (catálogo con filtros reactivos)
+│   ├── detalle-producto/  (ficha de producto, ngSwitch)
+│   ├── carrito/           (tabla de items, cálculo ITBIS)
+│   ├── checkout/          (formulario reactivo + generación de orden)
+│   ├── contacto/          (formulario reactivo de contacto)
+│   ├── favoritos/         (★ Bonus — lista de favoritos)
+│   ├── historial/         (★ Bonus — historial de compras)
+│   ├── login/             (autenticación simulada)
+│   └── not-found/         (página 404)
+│
+├── <span class="green">services/</span>           ← Lógica de negocio inyectable
+│   ├── producto.ts        (HttpClient + fetch JSON)
+│   ├── carrito.ts         (BehaviorSubject + LocalStorage)
+│   ├── auth.ts            (sesión simulada)
+│   ├── tema.ts            (dark mode toggle)
+│   ├── favoritos.ts       (★ Bonus)
+│   └── historial.ts       (★ Bonus)
+│
+├── <span class="green">models/</span>             ← Interfaces TypeScript
+│   ├── producto.ts
+│   ├── carrito-item.ts
+│   └── orden.ts
+│
+├── <span class="green">guards/</span>             ← Protección de rutas
+├── <span class="green">interceptors/</span>       ← Middleware HTTP
+├── <span class="green">pipes/</span>              ← Transformadores de datos
+│
+├── <span class="blue">app.routes.ts</span>       ← Definición de rutas
+├── <span class="blue">app.config.ts</span>       ← Providers globales (Router, HttpClient)
+└── <span class="blue">app.ts</span>              ← Componente raíz
+</div>
+
+<h3 class="subseccion">Flujo de datos</h3>
+<div class="info-box como">
+Cuando el usuario agrega un producto al carrito: el <code>ProductCard</code> llama a <code>CarritoService.agregar()</code> → el servicio actualiza el <code>BehaviorSubject</code> → el <code>Navbar</code> recibe el nuevo conteo automáticamente gracias al <code>AsyncPipe</code> → los datos se persisten en <code>localStorage</code>.
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 2. COMPONENTES -->
+<h2 class="seccion">2. Componentes y Templates</h2>
+
+<p>Un <strong>componente</strong> es la unidad básica de Angular. Combina lógica TypeScript, una plantilla HTML y estilos CSS en un bloque reutilizable e independiente.</p>
+
+<div class="info-box como">
+Cada componente tiene tres partes: la <strong>clase TypeScript</strong> (lógica), el <strong>template HTML</strong> (vista) y el <strong>archivo SCSS</strong> (estilos encapsulados). El decorador <code>@Component</code> los conecta.
+</div>
+
+<div class="info-box por-que">
+Usamos componentes para evitar repetir código. La tarjeta de producto (<code>ProductCard</code>) se reutiliza en <code>Home</code>, <code>Productos</code> y <code>Favoritos</code> sin duplicar HTML.
+</div>
+
+<pre><code>// src/app/components/product-card/product-card.ts
+@Component({
+  selector: 'app-product-card',      // etiqueta HTML personalizada
+  imports: [RouterLink, NgClass, NgIf, NgFor, DecimalPipe, UpperCasePipe],
+  templateUrl: './product-card.html', // HTML separado
+  styleUrl: './product-card.scss'     // CSS encapsulado (no contamina otros)
+})
+export class ProductCard implements OnInit {
+  @Input() producto!: Producto;       // recibe datos del componente padre
+  @Output() agregado = new EventEmitter&lt;Producto&gt;();  // notifica al padre
+}</code></pre>
+
+<div class="info-box en-proyecto">
+TechStore tiene 5 componentes compartidos (navbar, footer, product-card, search-bar, category-menu) y 10 páginas como componentes de ruta. Angular 22 usa standalone components — cada componente declara sus propias dependencias en el array <code>imports</code>.
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 3. DATA BINDING -->
+<h2 class="seccion">3. Data Binding — Los 4 Tipos</h2>
+
+<p>El <strong>data binding</strong> es el mecanismo que sincroniza la clase TypeScript con el template HTML. Angular soporta 4 tipos:</p>
+
+<h3 class="subseccion">3.1 Interpolación {{ }}</h3>
+<div class="info-box como">
+Muestra el valor de una variable del componente en el HTML. Angular evalúa la expresión y la convierte en texto.
+</div>
+<pre><code>&lt;!-- En product-card.html --&gt;
+&lt;h3 class="card-nombre"&gt;{{ producto.nombre }}&lt;/h3&gt;
+&lt;span&gt;RD$ {{ producto.precio | number:'1.0-0' }}&lt;/span&gt;</code></pre>
+
+<h3 class="subseccion">3.2 Property Binding [ ]</h3>
+<div class="info-box como">
+Vincula una propiedad del DOM con una expresión TypeScript. Los corchetes indican que el valor <strong>fluye del componente al HTML</strong>.
+</div>
+<pre><code>&lt;!-- En product-card.html --&gt;
+&lt;img [src]="producto.imagen" [alt]="producto.nombre"&gt;
+
+&lt;!-- En navbar.html — activa/desactiva el menú hamburguesa --&gt;
+&lt;div class="navbar-collapse" [class.show]="menuAbierto"&gt;</code></pre>
+
+<h3 class="subseccion">3.3 Event Binding ( )</h3>
+<div class="info-box como">
+Escucha eventos del DOM (clicks, inputs, etc.) y ejecuta un método del componente. Los paréntesis indican que el valor <strong>fluye del HTML al componente</strong>.
+</div>
+<pre><code>&lt;!-- En product-card.html --&gt;
+&lt;button (click)="agregarAlCarrito()"&gt;🛒 Agregar&lt;/button&gt;
+&lt;button (click)="toggleFavorito()"&gt;❤️&lt;/button&gt;
+
+&lt;!-- En carrito.html — escucha cambios en el input --&gt;
+&lt;input type="number" (change)="cambiarCantidad(item.producto.id, $event)"&gt;</code></pre>
+
+<h3 class="subseccion">3.4 Two-way Binding [( )]</h3>
+<div class="info-box como">
+Combina property binding y event binding. El valor fluye en <strong>ambas direcciones</strong>: si cambia el input del usuario, cambia la variable; si cambia la variable en el código, se actualiza el input. Requiere <code>FormsModule</code>.
+</div>
+<pre><code>&lt;!-- En search-bar.html — la búsqueda actualiza 'termino' en tiempo real --&gt;
+&lt;input
+  type="search"
+  [(ngModel)]="termino"
+  (input)="onInput()"
+  placeholder="Buscar productos..."&gt;</code></pre>
+<pre><code>// search-bar.ts — 'termino' se actualiza automáticamente con cada tecla
+export class SearchBar {
+  termino = '';  // sincronizado con el input
+}</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 4. DIRECTIVAS -->
+<h2 class="seccion">4. Directivas</h2>
+
+<p>Las <strong>directivas</strong> son instrucciones en el HTML que le dicen a Angular cómo transformar el DOM.</p>
+
+<h3 class="subseccion">4.1 Directivas Estructurales — Modifican el DOM</h3>
+
+<h4 class="concepto">*ngIf — Mostrar u ocultar elementos condicionalmente</h4>
+<div class="info-box como">
+Si la condición es <code>true</code>, Angular agrega el elemento al DOM. Si es <code>false</code>, lo elimina completamente (no solo lo oculta con CSS).
+</div>
+<pre><code>&lt;!-- En navbar.html — muestra badge solo si hay items --&gt;
+&lt;span class="carrito-badge" *ngIf="(cantidadCarrito$ | async) as n"&gt;
+  {{ n }}
+&lt;/span&gt;
+
+&lt;!-- En product-card.html — muestra precio original solo si existe --&gt;
+&lt;span class="precio-original" *ngIf="producto.precioOriginal"&gt;
+  RD$ {{ producto.precioOriginal | number:'1.0-0' }}
+&lt;/span&gt;</code></pre>
+
+<h4 class="concepto">*ngFor — Repetir elementos sobre una lista</h4>
+<div class="info-box como">
+Itera sobre un array y genera un elemento HTML por cada ítem. El <code>trackBy</code> mejora el rendimiento indicando a Angular cómo identificar cada ítem para no re-renderizar todo.
+</div>
+<pre><code>&lt;!-- En productos.html — genera una card por producto --&gt;
+&lt;app-product-card
+  *ngFor="let p of lista; trackBy: trackById"
+  [producto]="p"&gt;
+&lt;/app-product-card&gt;
+
+&lt;!-- En carrito.html — genera una fila por item del carrito --&gt;
+&lt;tr *ngFor="let item of items; trackBy: trackById"&gt;
+  &lt;td&gt;{{ item.producto.nombre }}&lt;/td&gt;
+  &lt;td&gt;{{ item.cantidad }}&lt;/td&gt;
+&lt;/tr&gt;</code></pre>
+
+<h4 class="concepto">*ngSwitch — Selección múltiple de plantillas</h4>
+<div class="info-box como">
+Evalúa una expresión y muestra el bloque que coincide con el valor. Equivalente al <code>switch/case</code> de JavaScript pero en el template.
+</div>
+<pre><code>&lt;!-- En detalle-producto.html — muestra estado según el stock --&gt;
+&lt;div [ngSwitch]="producto.stock"&gt;
+  &lt;span *ngSwitchCase="0" class="stock-cero"&gt;⚠ Sin stock&lt;/span&gt;
+  &lt;span *ngSwitchCase="1" class="stock-bajo"&gt;⚡ Último en stock&lt;/span&gt;
+  &lt;span *ngSwitchDefault class="stock-ok"&gt;✓ {{ producto.stock }} disponibles&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+<h3 class="subseccion">4.2 Directivas de Atributo — Modifican apariencia o comportamiento</h3>
+
+<h4 class="concepto">[ngClass] — Clases CSS dinámicas</h4>
+<pre><code>&lt;!-- En product-card.html — aplica clase si no hay stock --&gt;
+&lt;div class="product-card" [ngClass]="{'sin-stock': producto.stock === 0}"&gt;
+
+&lt;!-- En category-menu.html — marca la categoría activa --&gt;
+&lt;li *ngFor="let cat of categorias"
+    [ngClass]="{'activa': cat.id === categoriaActual}"&gt;</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 5. SERVICIOS -->
+<h2 class="seccion">5. Servicios e Inyección de Dependencias</h2>
+
+<p>Un <strong>servicio</strong> es una clase que encapsula lógica de negocio reutilizable (cargar datos, gestionar el carrito, autenticación, etc.) separada de los componentes. La <strong>inyección de dependencias (DI)</strong> es el mecanismo por el cual Angular provee automáticamente las instancias de servicios a quien las necesita.</p>
+
+<div class="info-box por-que">
+Si la lógica del carrito estuviera en los componentes, habría que duplicarla en <code>ProductCard</code>, <code>CarritoPage</code>, <code>Navbar</code>, etc. Con un servicio singleton (<code>providedIn: 'root'</code>), todos comparten la misma instancia y el mismo estado.
+</div>
+
+<pre><code>// src/app/services/carrito.ts
+@Injectable({ providedIn: 'root' })  // singleton disponible en toda la app
+export class CarritoService {
+  private _items = new BehaviorSubject&lt;ItemCarrito[]&gt;([]);
+
+  // Observable que los componentes pueden subscribir
+  items$ = this._items.asObservable();
+
+  agregar(producto: Producto): void {
+    const items = [...this._items.value];
+    // ... lógica de negocio
+    this._items.next(items);  // emite el nuevo estado a todos los observadores
+  }
+}</code></pre>
+
+<pre><code>// Cualquier componente lo inyecta con inject()
+export class ProductCard {
+  private carritoService = inject(CarritoService);  // Angular provee la instancia
+
+  agregarAlCarrito(): void {
+    this.carritoService.agregar(this.producto);
+  }
+}</code></pre>
+
+<div class="info-box en-proyecto">
+TechStore tiene 6 servicios: <code>ProductoService</code> (HTTP + RxJS), <code>CarritoService</code> (BehaviorSubject + localStorage), <code>AuthService</code> (sesión simulada), <code>TemaService</code> (dark mode), <code>FavoritosService</code> y <code>HistorialService</code> (ambos bonus).
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 6. ROUTING -->
+<h2 class="seccion">6. Routing — Navegación SPA</h2>
+
+<p>El <strong>Router de Angular</strong> permite navegar entre "páginas" sin recargar el navegador. Intercepta cambios de URL y renderiza el componente correspondiente dentro del <code>&lt;router-outlet&gt;</code>.</p>
+
+<div class="info-box como">
+El archivo <code>app.routes.ts</code> define el mapa de rutas. Cuando la URL cambia a <code>/carrito</code>, Angular destruye el componente anterior y crea el <code>CarritoComponent</code> en el outlet.
+</div>
+
+<pre><code>// src/app/app.routes.ts
+export const routes: Routes = [
+  // Carga inmediata (eager) — Home siempre disponible al arrancar
+  { path: '', component: Home },
+
+  // Lazy loading — solo se descarga cuando el usuario navega a /productos
+  {
+    path: 'productos',
+    loadComponent: () =>
+      import('./pages/productos/productos').then(m => m.Productos)
+  },
+
+  // Ruta dinámica — :id es un parámetro que cambia por cada producto
+  { path: 'producto/:id',
+    loadComponent: () => import('./pages/detalle-producto/detalle-producto')
+      .then(m => m.DetalleProducto)
+  },
+
+  // Ruta protegida — el Guard verifica autenticación antes de entrar
+  {
+    path: 'checkout',
+    loadComponent: () => import('./pages/checkout/checkout').then(m => m.Checkout),
+    canActivate: [authGuard]
+  },
+
+  // Wildcard — captura cualquier URL no reconocida
+  { path: '**', component: NotFound }
+];</code></pre>
+
+<h3 class="subseccion">RouterLink y RouterLinkActive</h3>
+<pre><code>&lt;!-- En navbar.html --&gt;
+&lt;a routerLink="/productos" routerLinkActive="activo"&gt;Catálogo&lt;/a&gt;
+&lt;!-- routerLinkActive agrega la clase 'activo' automáticamente cuando la ruta coincide --&gt;
+
+&lt;!-- Navegación programática desde TypeScript --&gt;
+constructor(private router: Router) {}
+irAProducto(id: string): void {
+  this.router.navigate(['/producto', id]);
+}</code></pre>
+
+<h3 class="subseccion">Leer parámetros de la URL</h3>
+<pre><code>// En detalle-producto.ts — lee el :id de la URL
+export class DetalleProducto implements OnInit {
+  private route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    this.producto$ = this.route.params.pipe(
+      switchMap(params => this.productoService.obtenerProducto(params['id']))
+    );
+  }
+}</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 7. LAZY LOADING -->
+<h2 class="seccion">7. Lazy Loading</h2>
+
+<p>El <strong>Lazy Loading</strong> divide la aplicación en módulos que se descargan bajo demanda, no todos de golpe al arrancar. Esto reduce el tiempo de carga inicial.</p>
+
+<div class="info-box por-que">
+Sin lazy loading, el navegador descargaría el código de todas las páginas aunque el usuario solo visite el home. Con lazy loading, <code>checkout.js</code> solo se descarga cuando el usuario navega a <code>/checkout</code>.
+</div>
+
+<div class="info-box en-proyecto">
+TechStore tiene <strong>8 chunks lazy</strong> generados automáticamente: productos (25.9 kB), detalle-producto (24.4 kB), checkout (22.3 kB), carrito (19.6 kB), contacto (16.2 kB), historial (11.4 kB), login (9.6 kB), favoritos (6.2 kB). El bundle inicial es solo ~42 kB.
+</div>
+
+<pre><code>// Sintaxis de lazy loading con loadComponent (Angular 15+)
+{
+  path: 'productos',
+  loadComponent: () =>
+    import('./pages/productos/productos').then(m => m.Productos)
+  // ↑ El import() es una función asíncrona — el archivo solo se descarga
+  //   cuando el usuario navega a /productos por primera vez
+}</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 8. INPUT/OUTPUT -->
+<h2 class="seccion">8. Comunicación entre Componentes (@Input / @Output)</h2>
+
+<p>Los componentes se comunican con sus padres e hijos mediante <code>@Input</code> y <code>@Output</code>.</p>
+
+<h3 class="subseccion">@Input — Del padre al hijo</h3>
+<div class="info-box como">
+El componente padre pasa datos al hijo mediante property binding. El hijo declara qué datos acepta con <code>@Input()</code>.
+</div>
+<pre><code>// product-card.ts (hijo)
+@Input() producto!: Producto;  // recibe el producto del padre
+
+// productos.html (padre) — pasa cada producto a la card
+&lt;app-product-card [producto]="p"&gt;&lt;/app-product-card&gt;</code></pre>
+
+<h3 class="subseccion">@Output + EventEmitter — Del hijo al padre</h3>
+<div class="info-box como">
+El hijo emite un evento con <code>EventEmitter</code>. El padre lo escucha con event binding y ejecuta su propia lógica.
+</div>
+<pre><code>// product-card.ts (hijo) — emite cuando el usuario agrega al carrito
+@Output() agregado = new EventEmitter&lt;Producto&gt;();
+@Output() favoritoToggled = new EventEmitter&lt;Producto&gt;();
+
+agregarAlCarrito(): void {
+  this.carritoService.agregar(this.producto);
+  this.agregado.emit(this.producto);  // notifica al padre
+}
+
+// search-bar.ts (hijo) — emite el término de búsqueda
+@Output() busqueda = new EventEmitter&lt;string&gt;();
+
+// productos.html (padre) — escucha el evento del hijo
+&lt;app-search-bar (busqueda)="onBusqueda($event)"&gt;&lt;/app-search-bar&gt;
+&lt;app-category-menu (categoriaSeleccionada)="onCategoria($event)"&gt;&lt;/app-category-menu&gt;</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 9. FORMS -->
+<h2 class="seccion">9. Formularios Reactivos</h2>
+
+<p>Los <strong>Formularios Reactivos</strong> definen la estructura y validaciones del formulario en TypeScript (no en el HTML), haciendo que el estado del formulario sea predecible y testeable.</p>
+
+<div class="info-box por-que">
+Los formularios reactivos permiten validar en tiempo real, desactivar el botón de envío hasta que el formulario sea válido, y mostrar mensajes de error dinámicos — sin lógica en el HTML.
+</div>
+
+<pre><code>// checkout.ts — construcción del formulario en TypeScript
+this.form = this.fb.group({
+  nombre:    ['', [Validators.required, Validators.minLength(3)]],
+  email:     ['', [Validators.required, Validators.email]],
+  direccion: ['', [Validators.required, Validators.minLength(10)]],
+  telefono:  ['', [Validators.required, Validators.pattern(/^\d{10,15}$/)]],
+  tarjeta:   ['', [Validators.required, Validators.pattern(/^\d{16}$/)]]
+});
+
+// Acceder a los controles
+get f() { return this.form.controls; }
+
+// Enviar solo si el formulario es válido
+onSubmit(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();  // muestra todos los errores
+    return;
+  }
+  // procesar orden...
+}</code></pre>
+
+<pre><code>&lt;!-- checkout.html — el HTML solo refleja el estado del formulario --&gt;
+&lt;form [formGroup]="form" (ngSubmit)="onSubmit()"&gt;
+  &lt;input formControlName="email" class="form-input"
+         [class.error]="f['email'].invalid &amp;&amp; f['email'].touched"&gt;
+
+  &lt;!-- Mensaje de error dinámico --&gt;
+  &lt;span *ngIf="f['email'].invalid &amp;&amp; f['email'].touched"&gt;
+    Email válido requerido
+  &lt;/span&gt;
+
+  &lt;button type="submit"&gt;Confirmar Orden&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+<table>
+  <tr><th>Validator</th><th>Qué valida</th><th>Usado en</th></tr>
+  <tr><td><code>Validators.required</code></td><td>Campo no vacío</td><td>Todos los campos</td></tr>
+  <tr><td><code>Validators.email</code></td><td>Formato de email</td><td>Checkout, Contacto</td></tr>
+  <tr><td><code>Validators.minLength(n)</code></td><td>Longitud mínima</td><td>Nombre, Dirección</td></tr>
+  <tr><td><code>Validators.pattern(/regex/)</code></td><td>Expresión regular</td><td>Teléfono, Tarjeta</td></tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 10. RxJS -->
+<h2 class="seccion">10. Observables y RxJS</h2>
+
+<p>Un <strong>Observable</strong> es un flujo de datos asíncrono que puede emitir múltiples valores a lo largo del tiempo. <strong>RxJS</strong> es la librería de operadores para transformar y combinar esos flujos.</p>
+
+<div class="info-box como">
+Piensa en un Observable como una tubería de agua: los datos fluyen por ella. Los <strong>operadores</strong> (map, filter, tap) son válvulas que transforman el flujo. El <strong>subscribe()</strong> es la llave que abre la tubería para recibir el agua.
+</div>
+
+<h3 class="subseccion">BehaviorSubject — Estado reactivo en tiempo real</h3>
+<div class="info-box por-que">
+Un <code>BehaviorSubject</code> es un Observable especial que: (1) recuerda el último valor emitido, (2) lo da inmediatamente a cualquier nuevo subscriptor, (3) puede actualizarse con <code>.next()</code>. Es ideal para representar estado que múltiples componentes necesitan observar.
+</div>
+
+<pre><code>// carrito.ts — el carrito como estado reactivo
+private _items = new BehaviorSubject&lt;ItemCarrito[]&gt;([]);
+
+// Observable derivado — se recalcula automáticamente cuando _items cambia
+total$ = this._items.pipe(
+  map(items => items.reduce((sum, i) => sum + i.producto.precio * i.cantidad, 0))
+);
+
+cantidad$ = this._items.pipe(
+  map(items => items.reduce((sum, i) => sum + i.cantidad, 0))
+);
+
+// Actualizar el estado (todos los observadores se notifican automáticamente)
+agregar(producto: Producto): void {
+  const nuevoEstado = [...this._items.value, { producto, cantidad: 1 }];
+  this._items.next(nuevoEstado);
+}</code></pre>
+
+<h3 class="subseccion">combineLatest — Combinar múltiples flujos</h3>
+<pre><code>// productos.ts — filtra reactivamente cuando cambia búsqueda O categoría
+this.productos$ = combineLatest([
+  this.productoService.obtenerProductos(),  // Observable del HTTP
+  this._busqueda$,    // BehaviorSubject del input de búsqueda
+  this._categoria$    // BehaviorSubject del menú de categorías
+]).pipe(
+  map(([lista, busqueda, categoria]) => {
+    // Se ejecuta cada vez que CUALQUIERA de los tres cambia
+    let resultado = lista;
+    if (categoria !== 'todos') resultado = resultado.filter(p => p.categoria === categoria);
+    if (busqueda)              resultado = resultado.filter(p => p.nombre.includes(busqueda));
+    return resultado;
+  }),
+  tap(lista => this.totalResultados = lista.length)  // efecto secundario sin modificar el flujo
+);</code></pre>
+
+<h3 class="subseccion">switchMap — Aplanar Observables anidados</h3>
+<pre><code>// detalle-producto.ts — cuando cambia el :id en la URL, hace nuevo request HTTP
+this.producto$ = this.route.params.pipe(
+  switchMap(params => this.productoService.obtenerProducto(params['id']))
+  // switchMap cancela la petición anterior si el usuario navega rápido
+);</code></pre>
+
+<h3 class="subseccion">AsyncPipe — Suscripción automática en el template</h3>
+<div class="info-box por-que">
+El <code>AsyncPipe</code> se suscribe al Observable en el HTML y se desuscribe automáticamente cuando el componente se destruye, evitando memory leaks.
+</div>
+<pre><code>&lt;!-- navbar.html — muestra el conteo del carrito, se actualiza solo --&gt;
+&lt;span *ngIf="(cantidadCarrito$ | async) as n"&gt;{{ n }}&lt;/span&gt;
+
+&lt;!-- productos.html — muestra los productos cuando llegan del servidor --&gt;
+&lt;div *ngIf="productos$ | async as lista; else cargando"&gt;
+  &lt;app-product-card *ngFor="let p of lista" [producto]="p"&gt;&lt;/app-product-card&gt;
+&lt;/div&gt;
+&lt;ng-template #cargando&gt;Cargando...&lt;/ng-template&gt;</code></pre>
+
+<table>
+  <tr><th>Operador RxJS</th><th>Qué hace</th><th>Usado en</th></tr>
+  <tr><td><code>map</code></td><td>Transforma cada valor emitido</td><td>CarritoService total$, ProductoService</td></tr>
+  <tr><td><code>filter</code></td><td>Deja pasar solo valores que cumplen condición</td><td>Productos filtrado</td></tr>
+  <tr><td><code>tap</code></td><td>Efecto secundario sin modificar el flujo</td><td>Logging, actualizar contadores</td></tr>
+  <tr><td><code>catchError</code></td><td>Maneja errores y devuelve un Observable alternativo</td><td>ProductoService (retorna [])</td></tr>
+  <tr><td><code>switchMap</code></td><td>Cambia al Observable interno, cancela el anterior</td><td>DetalleProducto (params → HTTP)</td></tr>
+  <tr><td><code>combineLatest</code></td><td>Emite cuando cualquier fuente emite</td><td>Productos (búsqueda + categoría)</td></tr>
+  <tr><td><code>debounceTime</code></td><td>Espera X ms antes de emitir (evita peticiones en cada tecla)</td><td>SearchBar (300ms)</td></tr>
+  <tr><td><code>distinctUntilChanged</code></td><td>No emite si el valor no cambió</td><td>SearchBar (evita duplicados)</td></tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 11. HTTP -->
+<h2 class="seccion">11. HttpClient — Consumo de API REST</h2>
+
+<p>Angular provee <code>HttpClient</code> para hacer peticiones HTTP de forma reactiva (devuelve Observables). TechStore lo usa para cargar los productos desde <code>/productos.json</code>.</p>
+
+<pre><code>// src/app/app.config.ts — activar HttpClient globalmente
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor]))
+                                   // ↑ conecta el interceptor automáticamente
+  ]
+};</code></pre>
+
+<pre><code>// src/app/services/producto.ts
+@Injectable({ providedIn: 'root' })
+export class ProductoService {
+  private http = inject(HttpClient);
+
+  obtenerProductos(): Observable&lt;Producto[]&gt; {
+    return this.http.get&lt;Producto[]&gt;('/productos.json').pipe(
+      tap(lista => console.log(`${lista.length} productos cargados`)),
+      catchError(err => {
+        console.error('Error:', err);
+        return of([]);  // devuelve array vacío en caso de error
+      })
+    );
+  }
+
+  obtenerProducto(id: string): Observable&lt;Producto | undefined&gt; {
+    return this.obtenerProductos().pipe(
+      map(lista => lista.find(p => p.id === id))
+    );
+  }
+}</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 12. PIPES -->
+<h2 class="seccion">12. Pipes</h2>
+
+<p>Los <strong>Pipes</strong> transforman valores en el template usando la sintaxis <code>{{ valor | pipe }}</code>. No modifican el dato original.</p>
+
+<h3 class="subseccion">Pipes de Angular usados en TechStore</h3>
+<table>
+  <tr><th>Pipe</th><th>Ejemplo</th><th>Resultado</th></tr>
+  <tr><td><code>number</code></td><td><code>{{ 76800 | number:'1.0-0' }}</code></td><td>76,800</td></tr>
+  <tr><td><code>uppercase</code></td><td><code>{{ 'apple' | uppercase }}</code></td><td>APPLE</td></tr>
+  <tr><td><code>date</code></td><td><code>{{ orden.fecha | date:'dd/MM/yyyy' }}</code></td><td>18/06/2025</td></tr>
+  <tr><td><code>async</code></td><td><code>{{ items$ | async }}</code></td><td>Se suscribe al Observable</td></tr>
+</table>
+
+<h3 class="subseccion">Pipe Personalizado: descuento</h3>
+<pre><code>// src/app/pipes/descuento-pipe.ts
+@Pipe({ name: 'descuento' })
+export class DescuentoPipe implements PipeTransform {
+  transform(precio: number, porcentaje: number = 0): number {
+    if (!precio || porcentaje &lt;= 0) return precio;
+    return Math.round(precio * (1 - porcentaje / 100));
+  }
+}
+
+// Uso en template: aplica 20% de descuento al precio
+{{ producto.precio | descuento:20 }}</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 13. LOCALSTORAGE -->
+<h2 class="seccion">13. LocalStorage — Persistencia de Estado</h2>
+
+<p>Angular no provee localStorage directamente — se accede a través de la API del navegador. Los servicios de TechStore persisten el estado para que sobreviva recargas de página.</p>
+
+<pre><code>// carrito.ts — persiste el carrito en localStorage
+private persistir(items: ItemCarrito[]): void {
+  localStorage.setItem('techstore_carrito', JSON.stringify(items));
+}
+
+// Recuperar al iniciar
+private cargarDesdeStorage(): ItemCarrito[] {
+  try {
+    const data = localStorage.getItem('techstore_carrito');
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];  // try/catch por si el JSON está corrupto
+  }
+}</code></pre>
+
+<table>
+  <tr><th>Clave localStorage</th><th>Qué guarda</th><th>Servicio</th></tr>
+  <tr><td><code>techstore_carrito</code></td><td>Items del carrito (array JSON)</td><td>CarritoService</td></tr>
+  <tr><td><code>techstore_tema</code></td><td>"oscuro" o "claro"</td><td>TemaService</td></tr>
+  <tr><td><code>techstore_usuario</code></td><td>Nombre y email del usuario</td><td>AuthService</td></tr>
+  <tr><td><code>techstore_favoritos</code></td><td>Productos favoritos (array JSON)</td><td>FavoritosService</td></tr>
+  <tr><td><code>techstore_historial</code></td><td>Órdenes completadas (array JSON)</td><td>HistorialService</td></tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 14. GUARDS/INTERCEPTORS -->
+<h2 class="seccion">14. Guards e Interceptors</h2>
+
+<h3 class="subseccion">Guards — Protección de Rutas</h3>
+<p>Un <strong>Guard</strong> es una función que Angular ejecuta antes de activar una ruta. Si devuelve <code>false</code>, cancela la navegación. Si devuelve un <code>UrlTree</code>, redirige a otra ruta.</p>
+
+<div class="info-box en-proyecto">
+En TechStore, el <code>authGuard</code> protege <code>/checkout</code> e <code>/historial</code>. Si el usuario no ha iniciado sesión, lo redirige a <code>/login</code> automáticamente.
+</div>
+
+<pre><code>// src/app/guards/auth-guard.ts
+export const authGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.estaAutenticado()) {
+    return true;  // deja pasar
+  }
+
+  router.navigate(['/login']);  // redirige al login
+  return false;
+};
+
+// En app.routes.ts — aplicar el guard a la ruta
+{ path: 'checkout', ..., canActivate: [authGuard] }</code></pre>
+
+<h3 class="subseccion">Interceptors — Middleware HTTP</h3>
+<p>Un <strong>Interceptor</strong> intercepta todas las peticiones HTTP salientes y/o respuestas entrantes. Se usa para agregar headers de autenticación, manejar errores globalmente, o mostrar un loader.</p>
+
+<pre><code>// src/app/interceptors/auth-interceptor.ts
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('techstore_token');
+
+  // Clonar la petición y agregar el header Authorization si hay token
+  const reqModificado = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
+
+  return next(reqModificado).pipe(
+    catchError(error => {
+      // Manejo global de errores HTTP
+      console.error(`Error HTTP ${error.status}:`, error.message);
+      return throwError(() => error);
+    })
+  );
+};</code></pre>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 15. BONUS -->
+<h2 class="seccion">15. Funcionalidades Bonus Implementadas</h2>
+
+<h3 class="subseccion">★ Tema Oscuro (Dark Mode)</h3>
+<p>El <code>TemaService</code> usa un <code>BehaviorSubject</code> para rastrear el tema actual. Al hacer toggle, agrega/quita la clase <code>.tema-claro</code> del elemento <code>&lt;html&gt;</code>. Las variables CSS en <code>:root</code> definen el tema oscuro (default) y <code>.tema-claro</code> las sobreescribe.</p>
+<pre><code>// tema.ts
+toggleTema(): void {
+  const nuevo = !this._oscuro.value;
+  this._oscuro.next(nuevo);
+  localStorage.setItem('techstore_tema', nuevo ? 'oscuro' : 'claro');
+  document.documentElement.classList.toggle('tema-claro', !nuevo);
+}</code></pre>
+
+<h3 class="subseccion">★ Lista de Favoritos</h3>
+<p>El <code>FavoritosService</code> mantiene un <code>BehaviorSubject&lt;Producto[]&gt;</code>. El botón de corazón en cada <code>ProductCard</code> llama a <code>toggleFavorito()</code> que agrega o quita el producto del array y lo persiste en localStorage. La página <code>/favoritos</code> muestra el Observable directamente con el <code>AsyncPipe</code>.</p>
+
+<h3 class="subseccion">★ Historial de Compras</h3>
+<p>Al confirmar una orden en checkout, se construye un objeto <code>Orden</code> con ID único (<code>ORD-timestamp-random</code>), fecha, cliente, items, subtotal, ITBIS y total. Se pasa a <code>HistorialService.agregarOrden()</code> que lo prepende al array del BehaviorSubject y lo persiste en localStorage. La página <code>/historial</code> lista las órdenes con <code>DatePipe</code> para formatear las fechas.</p>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ 16. RÚBRICA -->
+<h2 class="seccion">16. Rúbrica de Evaluación</h2>
+
+<div class="rubrica">
+  <div class="rubrica-titulo">📊 Distribución de Puntos — Práctica 4 (100 pts + 20 bonus)</div>
+  <table>
+    <tr><th>Criterio</th><th>Pts</th><th>Evidencia en el proyecto</th></tr>
+    <tr>
+      <td><strong>Componentes y Routing</strong></td>
+      <td class="pts">20</td>
+      <td>5 componentes reutilizables + 10 páginas. Rutas con parámetros dinámicos (<code>producto/:id</code>), wildcard (<code>**</code>), RouterLink, RouterLinkActive.</td>
+    </tr>
+    <tr>
+      <td><strong>Servicios y APIs</strong></td>
+      <td class="pts">15</td>
+      <td><code>ProductoService</code> con <code>HttpClient</code> consume <code>/productos.json</code>. 6 servicios inyectables con <code>providedIn: 'root'</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Formularios Reactivos</strong></td>
+      <td class="pts">15</td>
+      <td>Checkout y Contacto con <code>FormBuilder</code>, <code>Validators</code> (required, email, minLength, pattern/regex), errores dinámicos, <code>markAllAsTouched()</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>RxJS y Observables</strong></td>
+      <td class="pts">15</td>
+      <td><code>BehaviorSubject</code> en 4 servicios, <code>combineLatest</code> en filtros, <code>switchMap</code> para rutas dinámicas, operadores: map, filter, tap, catchError, debounceTime, distinctUntilChanged.</td>
+    </tr>
+    <tr>
+      <td><strong>Carrito y LocalStorage</strong></td>
+      <td class="pts">10</td>
+      <td>Carrito reactivo con <code>BehaviorSubject</code>, persistencia automática en localStorage, cálculo de subtotal + ITBIS 18% + total.</td>
+    </tr>
+    <tr>
+      <td><strong>Guards e Interceptors</strong></td>
+      <td class="pts">10</td>
+      <td><code>authGuard</code> protege <code>/checkout</code> e <code>/historial</code>, redirige a <code>/login</code>. <code>authInterceptor</code> agrega headers JWT y maneja errores HTTP globalmente.</td>
+    </tr>
+    <tr>
+      <td><strong>Lazy Loading</strong></td>
+      <td class="pts">5</td>
+      <td>8 rutas con <code>loadComponent()</code>. El bundle inicial es solo ~42 kB; el código de cada página se descarga al visitarla por primera vez.</td>
+    </tr>
+    <tr>
+      <td><strong>Calidad del código</strong></td>
+      <td class="pts">5</td>
+      <td>TypeScript tipado, interfaces para todos los modelos, servicios con separación de responsabilidades, standalone components, nombres en español.</td>
+    </tr>
+    <tr>
+      <td><strong>Diseño y UX</strong></td>
+      <td class="pts">5</td>
+      <td>Tema oscuro #111111 + amber #D97706, Bootstrap 5, responsive, estados de carga (spinner CSS), feedback visual (botón "Agregado ✓").</td>
+    </tr>
+    <tr>
+      <td><strong>★ Bonus: Tema Oscuro</strong> <span class="badge">+7</span></td>
+      <td class="pts">+7</td>
+      <td><code>TemaService</code> con toggle persistido en localStorage, variables CSS en <code>:root</code> vs <code>.tema-claro</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>★ Bonus: Favoritos</strong> <span class="badge">+7</span></td>
+      <td class="pts">+7</td>
+      <td><code>FavoritosService</code> con <code>BehaviorSubject&lt;Producto[]&gt;</code>, botón de corazón en cada ProductCard, página <code>/favoritos</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>★ Bonus: Historial</strong> <span class="badge">+6</span></td>
+      <td class="pts">+6</td>
+      <td><code>HistorialService</code>, generación de número de orden único, persistencia de órdenes con <code>DatePipe</code> para fechas, ruta protegida.</td>
+    </tr>
+  </table>
+</div>
+
+<br>
+<div class="info-box en-proyecto" style="margin-top: 1.5rem;">
+Este proyecto representa un portafolio de nivel Junior Front-End con las tecnologías más demandadas del mercado: Angular, TypeScript y RxJS. TechStore RD es una aplicación funcional completa que demuestra dominio de la arquitectura de componentes, programación reactiva y buenas prácticas de desarrollo.
+</div>
+
+<br>
+<p style="text-align:center; color:#999; font-size:0.8rem; margin-top:2rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+  TechStore RD — Práctica 4 · Desarrollo Web Moderno · 2025
+</p>
+
+</body>
+</html>

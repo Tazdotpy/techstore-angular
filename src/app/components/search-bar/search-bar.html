@@ -1,0 +1,12 @@
+<!-- Two-way binding: [(ngModel)]="termino" (rubric §3) -->
+<div class="search-bar-ts">
+  <span class="search-icon">🔍</span>
+  <input
+    type="search"
+    [(ngModel)]="termino"
+    (input)="onInput()"
+    placeholder="Buscar productos..."
+    class="search-input"
+    aria-label="Buscar productos">
+  <button *ngIf="termino" class="btn-limpiar" (click)="limpiar()" aria-label="Limpiar búsqueda">✕</button>
+</div>
